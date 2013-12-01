@@ -1,9 +1,9 @@
 /**
- * @file   dlx.h
+ * @file   DLX.h
  * @author Zhenjie Chen <zhenjie@mail.ustc.edu.cn>
  * @date   Sat Nov 30 06:57:03 2013
  * 
- * @brief  dlx
+ * @brief  DLX
  * 
  * 
  */

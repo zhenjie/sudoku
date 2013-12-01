@@ -1,5 +1,5 @@
 #include <iostream>
-#include "dlx.h"
+#include "DLX.h"
 
 using namespace std;
 

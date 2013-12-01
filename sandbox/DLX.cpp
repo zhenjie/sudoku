@@ -1,7 +1,7 @@
 #include <unordered_map>
 #include <iostream>
 #include <limits>
-#include "dlx.h"
+#include "DLX.h"
 
 using std::unordered_map;
 using std::numeric_limits;
