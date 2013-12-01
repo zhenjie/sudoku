@@ -13,9 +13,11 @@
 
 #include <string>
 #include <vector>
+#include <ostream>
 
 using std::string;
 using std::vector;
+using std::ostream;
 
 struct Data
 {
@@ -36,8 +38,9 @@ class DLX
 private:
    /// matrix[0][0] is the root
    /// 
-   vector<vector<Column> > matrix;
-   vector<vector<size_t> > solutions;
+   vector<vector<Column> > _matrix;
+   vector<vector<size_t> > _solutions;
+   vector<vector<string> > _rows;
 public:
    DLX();
 
@@ -48,12 +51,16 @@ public:
     */
    DLX(vector<string> &elements, vector<vector<string> > &rows);
 
+   void search(bool all);
+
+   vector<vector<size_t> > getSolutions();
+
+private:
    /** 
     * Do the recursive search
     * 
     */
    void search(vector<size_t> &slt, bool all);
-   void search(bool all);
 
    /** 
     * Get next column, can apply different strategies
@@ -75,16 +82,16 @@ public:
     * @param c column c.
     */
    void uncoverColumn(size_t c);
-      
+
+private:
    /** 
-    * Print the matrix
+    * Print the matrix, for debugging.
     * 
     */
    void printMatrix();
-
    void printUncoveredMatrixHeader();
-
-   void printSolutions();
+   void printSolutions(ostream &out);
+   void printSolutionsRows(ostream &out);
 };
 
 

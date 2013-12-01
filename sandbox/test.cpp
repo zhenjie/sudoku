@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
    DLX dlx(el, rows);
    
-   dlx.printMatrix();
+   // dlx.printMatrix();
    
    // cout << "first column: " << dlx.getNextColumn() << std::endl;
 

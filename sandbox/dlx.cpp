@@ -5,22 +5,23 @@
 
 using std::unordered_map;
 using std::numeric_limits;
+using std::ofstream;
 
 DLX::DLX(){}
 
-DLX::DLX(vector<string> &elements, vector<vector<string> > &rows)
+DLX::DLX(vector<string> &elements, vector<vector<string> > &rows):_rows(rows)
 {
    size_t sz = elements.size();
    size_t rsz = rows.size();
 
-   matrix = vector<vector<Column> > (rsz+1, vector<Column>(sz+1));
+   _matrix = vector<vector<Column> > (rsz+1, vector<Column>(sz+1));
 
    Column root;
    root.left = sz;
    root.right = 1;
    
    unordered_map<string, size_t> name_hash;
-   matrix[0][0] = root;
+   _matrix[0][0] = root;
    for(size_t i=1; i<=sz; i++)
    {
       Column column;
@@ -31,7 +32,7 @@ DLX::DLX(vector<string> &elements, vector<vector<string> > &rows)
       
       column.size = 0;
       column.name = elements[i-1];
-      matrix[0][i] = column;
+      _matrix[0][i] = column;
       name_hash[elements[i-1]] = i;
    }
    
@@ -47,21 +48,21 @@ DLX::DLX(vector<string> &elements, vector<vector<string> > &rows)
          Column obj;
 
          // 1) set up and down
-         obj.up = matrix[0][c].up;
+         obj.up = _matrix[0][c].up;
          obj.down = 0;
             
-         matrix[ matrix[0][c].up ][c].down = r;
-         matrix[0][c].up = r;
-         matrix[0][c].size++;
+         _matrix[ _matrix[0][c].up ][c].down = r;
+         _matrix[0][c].up = r;
+         _matrix[0][c].size++;
 
          // 2) set left and right
          if(last.left != 0)
          {
-            obj.left = matrix[r][ last.right ].left;
+            obj.left = _matrix[r][ last.right ].left;
             obj.right = last.right;
             
-            matrix[r][ last.right ].left = c;
-            matrix[r][ obj.left ].right = c;
+            _matrix[r][ last.right ].left = c;
+            _matrix[r][ obj.left ].right = c;
          }
          else
          {
@@ -71,7 +72,7 @@ DLX::DLX(vector<string> &elements, vector<vector<string> > &rows)
          }
 
          last = obj;
-         matrix[r][c] = obj;
+         _matrix[r][c] = obj;
       }
    }// for
 }
@@ -79,22 +80,23 @@ DLX::DLX(vector<string> &elements, vector<vector<string> > &rows)
 void DLX::search(bool all = false)
 {
    // clear
-   solutions.clear();
+   _solutions.clear();
 
    vector<size_t> slt;
    search(slt, all);
 
-   printSolutions();
+   printSolutions(std::cout);
+   printSolutionsRows(std::cout);
 }
 
 void DLX::search(vector<size_t> &slt, bool all = false)
 {
-   if(!solutions.empty() && !all) return;
+   if(!_solutions.empty() && !all) return;
 
-   // empty matrix 
-   if(matrix[0][0].right == 0) 
+   // empty _matrix 
+   if(_matrix[0][0].right == 0) 
    {
-      solutions.push_back(slt);
+      _solutions.push_back(slt);
       return;
    }
    
@@ -105,16 +107,16 @@ void DLX::search(vector<size_t> &slt, bool all = false)
    coverColumn(c);
 
    // 3) do the recursive job
-   size_t r = matrix[0][c].down;
+   size_t r = _matrix[0][c].down;
    while(r != 0)
    {
       slt.push_back(r);
 
-      size_t j = matrix[r][c].right;
+      size_t j = _matrix[r][c].right;
       while(j != c)
       {
          coverColumn(j);
-         j = matrix[r][j].right;
+         j = _matrix[r][j].right;
       }
       
       search(slt, all);
@@ -122,14 +124,14 @@ void DLX::search(vector<size_t> &slt, bool all = false)
       r = slt.back();
       slt.pop_back();
 
-      j = matrix[r][c].left;
+      j = _matrix[r][c].left;
       while(j != c)
       {
          uncoverColumn(j);
-         j = matrix[r][j].left;
+         j = _matrix[r][j].left;
       }
 
-      r = matrix[r][c].down;
+      r = _matrix[r][c].down;
    }
    // 4) uncover column c and return
    uncoverColumn(c);
@@ -139,15 +141,15 @@ size_t DLX::getNextColumn()
 {
    size_t c = 0;
    size_t sz = numeric_limits<int>::max();
-   size_t i = matrix[0][0].right;
+   size_t i = _matrix[0][0].right;
    while(i != 0)
    {
-      if(matrix[0][i].size < sz)
+      if(_matrix[0][i].size < sz)
       {
-         sz = matrix[0][i].size;
+         sz = _matrix[0][i].size;
          c = i;
       }
-      i = matrix[0][i].right;
+      i = _matrix[0][i].right;
    }
 
    return c;
@@ -156,67 +158,72 @@ size_t DLX::getNextColumn()
 void DLX::coverColumn(size_t c)
 {
    // 1) cover head list
-   size_t r = matrix[0][c].right;
-   matrix[0][r].left = matrix[0][c].left;
+   size_t r = _matrix[0][c].right;
+   _matrix[0][r].left = _matrix[0][c].left;
 
-   size_t l = matrix[0][c].left;
-   matrix[0][l].right = matrix[0][c].right;
+   size_t l = _matrix[0][c].left;
+   _matrix[0][l].right = _matrix[0][c].right;
    
    // 2) cover each row in column c
-   size_t i = matrix[0][c].down;
+   size_t i = _matrix[0][c].down;
    while(i != 0)
    {
       // cover row i
-      size_t j = matrix[i][c].right;
+      size_t j = _matrix[i][c].right;
       while(j != c)
       {
-         size_t d = matrix[i][j].down;
-         matrix[d][j].up = matrix[i][j].up;
+         size_t d = _matrix[i][j].down;
+         _matrix[d][j].up = _matrix[i][j].up;
 
-         size_t u = matrix[i][j].up;
-         matrix[u][j].down = matrix[i][j].down;
+         size_t u = _matrix[i][j].up;
+         _matrix[u][j].down = _matrix[i][j].down;
          
-         --matrix[0][j].size;
-         j = matrix[i][j].right;
+         --_matrix[0][j].size;
+         j = _matrix[i][j].right;
          
       }
-      i = matrix[i][c].down;
+      i = _matrix[i][c].down;
    }// while
 }
 
 void DLX::uncoverColumn(size_t c)
 {
    // 1) uncover each row in column c
-   size_t i = matrix[0][c].up;
+   size_t i = _matrix[0][c].up;
    while(i != 0)
    {
       // uncover row i
-      size_t j = matrix[i][c].left;
+      size_t j = _matrix[i][c].left;
       while(j != c)
       {
-         size_t d = matrix[i][j].down;
-         matrix[d][j].up = i;
+         size_t d = _matrix[i][j].down;
+         _matrix[d][j].up = i;
          
-         size_t u = matrix[i][j].up;
-         matrix[u][j].down = i;
+         size_t u = _matrix[i][j].up;
+         _matrix[u][j].down = i;
 
-         ++matrix[0][j].size;
-         j = matrix[i][j].left;
+         ++_matrix[0][j].size;
+         j = _matrix[i][j].left;
       }
-      i = matrix[i][c].up;
+      i = _matrix[i][c].up;
    }// while
 
    // 2) uncover head list
-   size_t r = matrix[0][c].right;
-   matrix[0][r].left = c;
+   size_t r = _matrix[0][c].right;
+   _matrix[0][r].left = c;
    
-   size_t l = matrix[0][c].left;
-   matrix[0][l].right = c;
+   size_t l = _matrix[0][c].left;
+   _matrix[0][l].right = c;
+}
+
+vector<vector<size_t> > DLX::getSolutions()
+{
+   return _solutions;
 }
 
 void DLX::printMatrix()
 {
-   for(auto const &e: matrix)
+   for(auto const &e: _matrix)
    {
       for(auto const &x: e)
       {
@@ -230,14 +237,14 @@ void DLX::printMatrix()
 
 void DLX::printUncoveredMatrixHeader()
 {
-   Column x = matrix[0][0];
+   Column x = _matrix[0][0];
    std::cout << "Root: (" << x.left << ", " << x.right << ", " << x.up
              << ", " << x.down << ", " << ", " << x.size << ") " << std::endl;
    
    size_t r = x.right;
    while(r != 0)
    {
-      Column x = matrix[0][r];
+      Column x = _matrix[0][r];
       std::cout << "(" << x.left << ", " << x.right << ", " << x.up
                 << ", " << x.down << ", " << ", " << x.size << ") ";
       
@@ -246,12 +253,25 @@ void DLX::printUncoveredMatrixHeader()
    std::cout << std::endl;
 }
 
-void DLX::printSolutions()
+void DLX::printSolutions(ostream &out)
 {
-   for(auto const &e: solutions)
+   for(auto const &e: _solutions)
    {
-      for(size_t const &x: e)
-         std::cout << x << " ";
-      std::cout << std::endl;
+      for(auto const &x: e)
+         out << x << " ";
+      out << std::endl;
    }
+}
+
+void DLX::printSolutionsRows(ostream &out)
+{
+   for(auto const &e: _solutions)
+   {
+      for(auto const &x: e)
+      {
+         for(auto const &st: _rows[x-1])
+            out << st << " ";
+         out << std::endl;
+      }
+   }//for
 }
