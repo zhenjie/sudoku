@@ -6,12 +6,12 @@
  * @brief  Simple benchmark for sudoku solver based on DLX.
  * 
  * Result:
- * zhenjie@aw-ssl:~/Workspace/sudoku/sandbox/sudoku$time ./a.out benchmark/sudoku17-ml.txt 
+ * zhenjie@aw-ssl:~/Workspace/sudoku/sandbox/sudoku/benchmark$time ./a.out sudoku17-ml.txt 
  *   real	9m51.056s
  *   user	8m11.359s
  *   sys	1m38.790s
  *
- * zhenjie@aw-ssl:~/Workspace/sudoku/sandbox/sudoku$time ./a.out benchmark/sudoku-20-hard.txt
+ * zhenjie@aw-ssl:~/Workspace/sudoku/sandbox/sudoku/benchmark$time ./a.out sudoku-20-hard.txt
  *   real	0m0.350s
  *   user	0m0.312s
  *   sys	0m0.036s
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
          for(int i=0; i<81; i++)
          {
             ss >> c;
-            if(c != '0' && c != '.' && c != '#')
+            if(c >= '1' && c <= '9')
                sudoku[i/9][i%9] = c - '0';
          }
          ss.str(string());
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
          vector<Solution*> slts = solver.getSolutions();
          if(argc == 3)
          {
-            cout << "Solutions:: " << slts.size() << endl;
+            cout << "Solutions: " << slts.size() << endl;
             for(auto e: slts)
             {
                e->printSolution();
