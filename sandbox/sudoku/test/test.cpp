@@ -1,18 +1,17 @@
-#include <iostream>
+#include <iostream> 
 #include <unordered_map>
 #include <sstream>
 
 #include "SudokuSolution.h"
 #include "SudokuSolver.h"
-#include "Solution.h"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
    cout << "sudoku 1:" << endl;
-   SudokuSolver solver(3, 3, false);
-   solver.load("9x9");
+   SudokuSolver solver(3, 3, true);
+   solver.load("9x9v2");
    solver.print_m();
    solver.solve();
 
