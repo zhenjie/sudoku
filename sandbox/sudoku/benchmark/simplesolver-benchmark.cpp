@@ -6,6 +6,11 @@
  * @brief  Sudoku solver using naive backtrack, no optimiaztion. 
  * 
  * The result is unacceptable.
+ * zhenjie@aw-ssl:~/Workspace/sudoku/sandbox/sudoku/benchmark$time ./a.out sudoku-20-hard.txt
+ *   real	2m29.532s
+ *   user	2m29.425s
+ *   sys	0m0.004s
+ * It's roughly 4285 times slower than DLX implementation without optimization.
  */
 
 #include <iostream>
