@@ -13,25 +13,23 @@
 
 #include <ostream>
 #include <vector>
+#include <string>
 
 #include "Solution.h"
 
 using std::vector;
+using std::string;
 
 class SudokuSolution: public Solution
 {
 private:
-   vector<vector<char> > _solution;
-
+   vector<vector<int> > _solution;
 public:
-   SudokuSolution();
+   SudokuSolution(const vector<size_t> &slt, const vector<vector<string> > &rows, int row, int column);
    virtual ~SudokuSolution();
 
    void printSolution();
-   void printSolution(std::ostream &out) = 0;
-   void printSolutions() = 0;
-   void printSolutions(std::ostream &out) = 0;
-   
+   void printSolution(std::ostream &out);
 };
 
 

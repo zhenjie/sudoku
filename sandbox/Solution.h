@@ -21,8 +21,6 @@ public:
    
    virtual void printSolution() = 0;
    virtual void printSolution(std::ostream &out) = 0;
-   virtual void printSolutions() = 0;
-   virtual void printSolutions(std::ostream &out) = 0;
 };
 
 #endif

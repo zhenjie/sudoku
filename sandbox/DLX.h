@@ -41,17 +41,22 @@ private:
    vector<vector<Column> > _matrix;
    vector<vector<size_t> > _solutions;
    vector<vector<string> > _rows;
+
+   // vector<size_t> _initPartialSolution;
 public:
    DLX();
 
    /** 
     * Construct matrix from elements and rows.
     * 
-    * @param rows 
+    * @param elements Name of each column.
+    * @param rows Each row contains a set of names.
     */
    DLX(vector<string> &elements, vector<vector<string> > &rows);
 
-   void search(bool all);
+   // DLX(vector<string> &elements, vector<vector<string> > &rows, vector<size_t> &initial){}
+   
+   bool search(bool all = false);
 
    vector<vector<size_t> > getSolutions();
 
@@ -83,7 +88,7 @@ private:
     */
    void uncoverColumn(size_t c);
 
-private:
+public:
    /** 
     * Print the matrix, for debugging.
     * 

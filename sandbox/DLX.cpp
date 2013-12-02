@@ -77,7 +77,7 @@ DLX::DLX(vector<string> &elements, vector<vector<string> > &rows):_rows(rows)
    }// for
 }
 
-void DLX::search(bool all = false)
+bool DLX::search(bool all)
 {
    // clear
    _solutions.clear();
@@ -85,8 +85,7 @@ void DLX::search(bool all = false)
    vector<size_t> slt;
    search(slt, all);
 
-   printSolutions(std::cout);
-   printSolutionsRows(std::cout);
+   return !_solutions.empty();
 }
 
 void DLX::search(vector<size_t> &slt, bool all = false)
@@ -229,7 +228,7 @@ void DLX::printMatrix()
       {
          std::cout << x.name;
          std::cout << "(" << x.left << ", " << x.right << ", " << x.up
-                   << ", " << x.down << ", " << ", " << x.size << ") ";
+                   << ", " << x.down << ", " << x.size << ") ";
       }
       std::cout << std::endl;
    }
@@ -239,14 +238,14 @@ void DLX::printUncoveredMatrixHeader()
 {
    Column x = _matrix[0][0];
    std::cout << "Root: (" << x.left << ", " << x.right << ", " << x.up
-             << ", " << x.down << ", " << ", " << x.size << ") " << std::endl;
+             << ", " << x.down << ", " << x.size << ") " << std::endl;
    
    size_t r = x.right;
    while(r != 0)
    {
       Column x = _matrix[0][r];
       std::cout << "(" << x.left << ", " << x.right << ", " << x.up
-                << ", " << x.down << ", " << ", " << x.size << ") ";
+                << ", " << x.down << ", " << x.size << ") ";
       
       r = x.right;
    }

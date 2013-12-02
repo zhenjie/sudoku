@@ -3,6 +3,28 @@
 
 using namespace std;
 
+void test()
+{
+   vector<string> el = {"1", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+   vector<vector<string> > rows;
+   rows.push_back(vector<string>({"1", "5", "9", "13"}));
+   rows.push_back(vector<string>({"3", "8", "10", "16"}));
+   rows.push_back(vector<string>({"4", "7", "11", "15"}));
+
+   rows.push_back(vector<string>({"1", "6", "10", "14"}));
+   rows.push_back(vector<string>({"3", "7", "9", "15"}));
+   rows.push_back(vector<string>({"4", "8", "12", "16"}));
+
+   DLX dlx(el, rows);
+
+   cout << "First solution: " << endl;
+   dlx.search();
+
+   cout << "All solution: " << endl;
+   dlx.search(true);
+   
+}
+
 int main(int argc, char *argv[])
 {
    vector<string> el = {"A", "B", "C", "D", "E", "F", "G"};
@@ -34,10 +56,14 @@ int main(int argc, char *argv[])
 
    
    cout << "First solution: " << endl;
-   dlx.search(false);
+   dlx.search();
 
    cout << "All solution: " << endl;
    dlx.search(true);
 
+
+   test();
+
    return 0;
 }
+

@@ -21,22 +21,22 @@ class Solver
 {
 protected:
    /// to find all solution? 
-   bool all;
+   bool _all;
    
    /// any solution?
-   bool found;
+   bool _found;
    
    /// is the puzzle solved?
-   bool solved; 
+   bool _solved; 
 
 public:
-Solver():all(false), found(false), solved(false){}
+Solver():_all(false), _found(false), _solved(false){}
    virtual ~Solver(){}
 
    virtual bool solve() = 0;
    virtual void clear()
    {
-      all = found = solved = false;
+      _all = _found = _solved = false;
    }
    virtual vector<Solution*> getSolutions() = 0;
    virtual Solution* getOneSolution() = 0;
