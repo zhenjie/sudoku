@@ -63,18 +63,23 @@ public:
    bool load(string filename);
    bool load(vector<vector<int> > &matrix);
 
-   void makeRows();
-   void makeElements();
-   
    bool solve();
    
    void clear();
 
    vector<Solution*> getSolutions();
    Solution* getOneSolution();
+
+   void set_row(int row);
+   void set_column(int column);
+   void set_row_column(int row, int column);
+   void set_find_all(bool all);
+   void set_stringMap(const unordered_map<string, int> &sm);
 private:
    void makeRow(int i, int j, int k, vector<string> &row);
    void makeSolutions(vector<vector<size_t> > slt);
+   void makeRows();
+   void makeElements();
 
 public:
    void print_m();

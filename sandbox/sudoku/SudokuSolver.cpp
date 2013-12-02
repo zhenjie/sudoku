@@ -37,7 +37,11 @@ SudokuSolver::SudokuSolver(const unordered_map<string, int> &sm, int row, int co
 SudokuSolver::~SudokuSolver()
 {
    // destroy cached solutions
-   clear();
+   // destroy cached solutions
+   for(auto pt: _solutions)
+   {
+      delete pt;
+   }
 }
 
 void SudokuSolver::clear()
@@ -50,6 +54,19 @@ void SudokuSolver::clear()
    {
       delete pt;
    }
+   _solutions.clear();
+
+   // clear _elements
+   _elements.clear();
+
+   // clear _rows
+   _rows.clear();
+   
+   // clear matrix
+   _m.clear();
+
+   // reset _row and _column to default
+   _row = _column = 3;
 }
 
 vector<Solution*> SudokuSolver::getSolutions()
@@ -185,7 +202,7 @@ bool SudokuSolver::solve()
 
    DLX dlx(_elements, _rows);
 
-   _found = dlx.search(true);
+   _found = dlx.search(_all);
    _solved = true;
    
    makeSolutions(dlx.getSolutions());
@@ -200,6 +217,32 @@ void SudokuSolver::makeSolutions(vector<vector<size_t> > slt)
       SudokuSolution* sslt = new SudokuSolution(e, _rows, _row, _column);
       _solutions.push_back(sslt);
    }
+}
+
+void SudokuSolver::set_row(int row)
+{
+   _row = row;
+}
+
+void SudokuSolver::set_column(int column)
+{
+   _column = column;
+}
+
+void SudokuSolver::set_row_column(int row, int column)
+{
+   _row = row;
+   _column = column;
+}
+
+void SudokuSolver::set_find_all(bool all)
+{
+   _all = all;
+}
+
+void SudokuSolver::set_stringMap(const unordered_map<string, int> &sm)
+{
+   _stringMap = sm;
 }
 
 void SudokuSolver::print_m()
