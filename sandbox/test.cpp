@@ -57,12 +57,11 @@ int main(int argc, char *argv[])
    
    cout << "First solution: " << endl;
    dlx.search();
-
+   dlx.printSolutions(cout);
+   
    cout << "All solution: " << endl;
    dlx.search(true);
-
-
-   test();
+   dlx.printSolutions(cout);
 
    return 0;
 }
