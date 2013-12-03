@@ -55,5 +55,10 @@ public:
    void set_column(int column);
    void set_row_column(int row, int column);
    void set_find_all(bool all);
+
+   void print_rows();
+private:
+   void makeRows(int i, int j, int pentomino, vector<vector<string> > &rows);
+   vector<string> makeRows(vector<int> &r, vector<int> &c, vector<string> row);
 };
 #endif

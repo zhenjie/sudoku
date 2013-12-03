@@ -24,7 +24,7 @@ class PentominoesSolution: public Solution
 private:
    vector<vector<int> > _solution;
 public:
-   PentominoesSolution();
+   PentominoesSolution(const vector<size_t> &slt, const vector<vector<string> > &rows, int row, int column);
    virtual ~PentominoesSolution();
 
    void printSolution();
