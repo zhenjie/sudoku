@@ -174,18 +174,30 @@ void SudokuSolver::makeElements()
 {
    // make _elements based on _rows
    // wow! we got a magic constant 4!
-   unordered_map<string, bool> map;
-   for(int i=0; i<4; i++)
+
+   // one way:
+   // unordered_map<string, bool> map;
+   // for(int i=0; i<4; i++)
+   // {
+   //    for(auto const &e: _rows)
+   //    {
+   //       if(map.find(e[i]) == map.end())
+   //       {
+   //          _elements.push_back(e[i]);
+   //          map[e[i]] = true;
+   //       }
+   //    }
+   // }//for
+
+   // another way:
+   // We have (_row*_column)^2*4 columns
+   stringstream ss;
+   for(int i=1; i<=(_row*_column)*(_row*_column)*4; i++)
    {
-      for(auto const &e: _rows)
-      {
-         if(map.find(e[i]) == map.end())
-         {
-            _elements.push_back(e[i]);
-            map[e[i]] = true;
-         }
-      }
-   }//for
+      ss << i;
+      _elements.push_back(ss.str());
+      ss.str(string());
+   }
 }
 
 bool SudokuSolver::solve()
