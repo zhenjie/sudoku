@@ -51,6 +51,11 @@ class Solver is another pure virtual class which will be inheritated by specific
 You have to implement the interface in your Solver to make rows and elements and pass them to DLX. It's also your job to set up the solutions through your inheritated Solution class. For the sudoku solver, we defined class SudokuSolver which will load data from memory or file, ake rows as well as elements, pass them to DLX, make solutions using the constructor of SudokuSolution. 
 
 
+Pentominoes
+===========
+[[http://en.wikipedia.org/wiki/Pentomino]]
+We implemented the Pentominoes solver which supports different dimensions(3x20, 4x15, 5x12, 6x10). As you can see, it's ugly coded and inefficient. Deeper thought and extra work required.
+
 Other interesting puzzle?
 =========================
 If these puzzle can be solved by exact cover, then it can be solved by our library. Take N-Queen as example,
@@ -60,7 +65,7 @@ We can define two classes,
     class NQueenSolver : public Solver{}
     class NQueenSolution : public Solution{}
 ``` 
-Implement the interface *load*, *makeRows*, *makeElements*, *makeSolutions*, etc.
+Implement the interface *makeRows*, *makeElements*, *makeSolutions*, *constructor of NQueenSolution*, etc.
 
 
 
