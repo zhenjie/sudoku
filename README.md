@@ -53,7 +53,7 @@ You have to implement the interface in your Solver to make rows and elements and
 
 Pentominoes
 ===========
-[[http://en.wikipedia.org/wiki/Pentomino]]
+http://en.wikipedia.org/wiki/Pentomino
 We implemented the Pentominoes solver which supports different dimensions(3x20, 4x15, 5x12, 6x10). As you can see, it's ugly coded and inefficient. Deeper thought and extra work required.
 
 Other interesting puzzle?
