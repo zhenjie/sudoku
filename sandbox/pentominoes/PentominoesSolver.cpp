@@ -369,7 +369,7 @@ void PentominoesSolver::makeRows(int i, int j, int pentomino, vector<vector<stri
          rows.push_back( makeRows(r, c, row) );
       }
       
-      if(i+2 <= _row && j+1 <= _row)
+      if(i+2 <= _row && j+1 <= _column)
       {
          r = vector<int>({i, i, i+1, i+2, i+2});
          c = vector<int>({j, j+1, j+1, j, j+1});

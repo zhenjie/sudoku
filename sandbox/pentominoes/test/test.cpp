@@ -15,9 +15,9 @@
 #include "PentominoesSolver.h"
 
 
-int main(int argc, char *argv[])
+void test(int row = 6, int column = 10)
 {
-   PentominoesSolver ps(3, 20);
+   PentominoesSolver ps(row, column);
    if( ps.solve() ) 
       std::cout << "Found solution:" << std::endl;
    else
@@ -25,37 +25,18 @@ int main(int argc, char *argv[])
 
    auto slt = ps.getOneSolution();
    slt->printSolution();
+}
 
+int main(int argc, char *argv[])
+{
+   test(3, 20);
+   test(4, 15);
+   test(5, 12);
+   test(6, 10);
+   test(20, 3);
+   test(15, 4);
+   test(12, 5);
+   test(10, 6);
 
-   ps.clear();
-   ps.set_row_column(4, 15);
-   if( ps.solve() ) 
-      std::cout << "Found solution:" << std::endl;
-   else
-      std::cout << "No solution!" << std::endl;
-   slt = ps.getOneSolution();
-   slt->printSolution();
-
-   ps.clear();
-   ps.set_row_column(5, 12);
-   if( ps.solve() ) 
-      std::cout << "Found solution:" << std::endl;
-   else
-      std::cout << "No solution!" << std::endl;
-   slt = ps.getOneSolution();
-   slt->printSolution();
-
-
-   ps.clear();
-   ps.set_row_column(6, 10);
-   if( ps.solve() ) 
-      std::cout << "Found solution:" << std::endl;
-   else
-      std::cout << "No solution!" << std::endl;
-   slt = ps.getOneSolution();
-   slt->printSolution();
-
-   
-   
    return 0;
 }
